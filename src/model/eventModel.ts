@@ -1,4 +1,4 @@
-export interface Event {
+export interface eventModel {
     id:string,
     name:string,
     date:Date,

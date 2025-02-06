@@ -11,7 +11,7 @@ const eventSchema = z.object({
     date: z.date({message: "Invalid date"})
 });
 
-function validateUser(name:string, email:string, password:string):boolean{
+ export function validateUser(name:string, email:string, password:string):boolean{
     const result = userSchema.safeParse({name, email, password});
     
     if(result.success){
@@ -19,7 +19,7 @@ function validateUser(name:string, email:string, password:string):boolean{
         return true;
     }
     else{
-        console.log(result.error.errors);
+        console.log(result.error.format().password?._errors.toString());
         return false;
     }
 }
