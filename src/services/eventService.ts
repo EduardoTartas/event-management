@@ -3,25 +3,33 @@ import sqlite3 from "sqlite3";
 const db = new sqlite3.Database("src/data/eventDB.db");
 
 export function createEventTable(): void {
-    const query = `CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id))`;
+    const query = `CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id))`; 
     db.run(query);
 }
 
-export function insertIntoEvent(name: string, date: string, user_id: number): void {
+export async function insertIntoEvent(name: string, date: string, user_id: number): Promise<any> {
     const query = `INSERT INTO events (name, date, user_id) VALUES (?, ?, ?)`;
     const values = [name, date, user_id];
-    db.run(query, values);
+    return new Promise((resolve, reject) => {    
+       const teste =  db.run(query, values, (err) => {
+            if (err) {
+                return reject(err);
+            } 
+        });
+        return resolve(teste);
+    });
 }
 
-export function listAllEvents(): void {
-    const query = `SELECT * FROM events`;
-    db.all(query, (error, rows) => {
-        if (error) {
-            console.error("error, no events found!", error.message);
-        } else {
-            console.log("Events found!");
-            console.table(rows);
-        }
+export function listAllEvents(): Promise<any> {
+     return new Promise((resolve, reject) => {
+        const query = `SELECT * FROM events`;
+        db.all(query, (error, rows) => {
+            if (error) {
+                return reject(error);
+            } else {
+                 return resolve(rows);
+            }
+        });
     });
 }
 

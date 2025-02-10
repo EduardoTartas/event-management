@@ -27,14 +27,20 @@ export function insertIntoEvent(name: string, date: string, user_id: number): vo
     }
 }
 
-export function listAllEvents(): void {
+console.log( eventService.insertIntoEvent("Casamento", "10-01-2025", 10));
+
+
+export async function listAllEvents(): Promise<any> {
     try{
-        eventService.listAllEvents();
+        const events = await eventService.listAllEvents();
+        console.log("Events found!");
+        console.table(events);
     }
     catch(err){
         console.log("Error listing events", err);
     }
 }
+
 
 export function listEventByID(id: number): void {
     try{

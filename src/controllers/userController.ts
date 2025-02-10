@@ -26,6 +26,7 @@ export function insertIntoUser(name: string, email: string, password: string): v
     }
 }
 
+
 export function listAllUsers(): void {
     try{
         userService.listAllUsers();
