@@ -1,71 +1,91 @@
 import sqlite3 from "sqlite3";
+import { promise } from "zod";
 
 const db = new sqlite3.Database("src/data/eventDB.db");
 
-export function createEventTable(): void {
+export async function verifyEvent(id:number):Promise<any>{
+    const query = `SELECT id FROM events WHERE id = ?`;
+    return new Promise((resolve, reject) => {
+        db.get(query, id, (error, row) => {
+            if (error) {
+                return reject(error);
+            }
+            return resolve(row);
+        });
+    });
+}
+
+export async function createEventTable(): Promise<any> {
     const query = `CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id))`; 
-    db.run(query);
+    return new Promise((resolve, reject) => {
+        db.run(query, (error) => {
+            if (error) {
+                return reject(error);
+            }
+            return resolve(true);
+        });
+    });
 }
 
 export async function insertIntoEvent(name: string, date: string, user_id: number): Promise<any> {
     const query = `INSERT INTO events (name, date, user_id) VALUES (?, ?, ?)`;
     const values = [name, date, user_id];
-    return new Promise((resolve, reject) => {    
-       const teste =  db.run(query, values, (err) => {
-            if (err) {
-                return reject(err);
+     return new Promise((resolve, reject) => {    
+       db.run(query, values, (error) => {
+            if (error){
+                return reject(error);
             } 
         });
-        return resolve(teste);
+            return resolve(true);
     });
 }
 
-export function listAllEvents(): Promise<any> {
+export async function listAllEvents(): Promise<any> {
+    const query = `SELECT * FROM events`;
      return new Promise((resolve, reject) => {
-        const query = `SELECT * FROM events`;
         db.all(query, (error, rows) => {
             if (error) {
                 return reject(error);
-            } else {
-                 return resolve(rows);
             }
+            return resolve(rows);
         });
     });
 }
 
-export function ListEventByID(id: number): void {
+export async function ListEventByID(id: number): Promise<any> {
     const query = `SELECT * FROM events WHERE id = ?`;
-    db.get(query, id, (error, row) => {
-        if (error) {
-            console.error("Error!", error.message);
-        }
-        else if (!row) {
-            console.error("No event found!");
-        }
-        else {
-            console.log("Event found!");
-            console.table(row);
-        }
+    return new Promise((resolve, reject) => {
+        db.get(query, id, (error, row) => {
+            if (error) {
+                return reject(error);
+            }
+            return resolve(row);
+        });
     });
 }
 
-export function deleteEvent(id: number): void {
-    const query = `DELETE FROM events WHERE id = ?`;
-    const values = id;
-    db.run(query, values, function () {
-        if (this.changes === 0) {
-            console.log("No event found with this id!");
-        }
+export async function deleteEvent(id: number): Promise<any> {
+    const query = `DELETE FROM events WHERE id >= ?`;
+    return new Promise((resolve, reject) =>{
+        db.run(query, id, function (error) {
+            if(error){
+                return reject(error);
+            }  
+    });
+        return resolve(true);
     });
 }
 
-export function updateEvent(id: number, name: string, date: string, user_id: number) {
+export async function updateEvent(id: number, name: string, date: string, user_id: number): Promise<any> {
     const query = `UPDATE events SET name = ?, date = ?, user_id = ? WHERE id = ?`;
     const values = [name, date, user_id, id];
-    db.run(query, values, function () {
-        if (this.changes === 0) {
-            console.log("No event found!");
-        }
+    return new Promise((resolve, reject) => {
+        db.run(query, values, (error) => {
+            if (error) {
+                return reject(error);
+            }
+        });
+        return resolve(true);
     });
 }
 

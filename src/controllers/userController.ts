@@ -1,74 +1,79 @@
 import * as userService from '../services/userService';
-import { validateUser} from '../utils/validations';
+import { validateUser } from '../utils/validations';
 
 export function createUserTable(): void {
-    try{
-        userService.createUserTable();
-        console.log("User table created successfully!");
-    }
-    catch(err){
-        console.log("Error creating user table", err);
-    }
+    userService.createUserTable()
+        .then((resolve) => console.log("User table created successfully!", resolve))
+        .catch((reject) => console.log("Error creating user table", reject));
 }
 
 export function insertIntoUser(name: string, email: string, password: string): void {
     if(validateUser(name, email, password)){
-        try{
-            userService.insertIntoUser(name, email, password);
-            console.log("User inserted successfully!");
-        }
-        catch(err){
-            console.log("Error inserting user", err);
-        }
-    }
-    else{
-        console.log("Invalid user");
+        userService.insertIntoUser(name, email, password)
+        .then((resolve) => console.log("User inserted successfully!", resolve))
+        .catch((reject) => console.log("Error inserting user", reject)); 
     }
 }
 
-
 export function listAllUsers(): void {
-    try{
-        userService.listAllUsers();
-    }
-    catch(err){
-        console.log("Error listing users", err);
-    }
+    userService.listAllUsers()
+        .then((resolve) => {
+            if (resolve.length > 0) {
+                console.log("Users found!");
+                console.table(resolve);
+            }
+            else {
+                console.log("No users found!");
+                console.log(resolve);
+            }
+        })
+        .catch((reject) => { console.log("Error listing users", reject) });
 }
 
 export function listUserByID(id: number): void {
-    try{
-        userService.ListUserByID(id);
-    }
-    catch(err){
-        console.log("Error listing user", err);
-    }
+    userService.ListUserByID(id)
+    .then((resolve) => {
+        if(resolve){
+            console.log("User found!");
+            console.table(resolve);
+        }
+        else{
+            console.log("No user found with this id!");
+        }
+    })
+    .catch((reject) => {console.log("Error listing user", reject)});
 }
 
 export function deleteUser(id: number): void {
-    try{
-        userService.deleteUser(id);
-        console.log("User deleted successfully!");
-    }
-    catch(err){
-        console.log("Error deleting user", err);
-    }
-    
+    userService.verifyUser(id)
+    .then((resolve) => {
+        if(!resolve){
+            console.log("No user found with this id!");
+            return;
+        }
+
+        userService.deleteUser(id)
+        .then(() => {console.log("User deleted successfully!")})
+        .catch((reject) => {console.log("Erro deleting user", reject)});
+    })
+    .catch((reject) =>{console.log("Error verifying user", reject)});
 }
 
 export function updateUser(id: number, name: string, email: string, password: string): void {
-    if(validateUser(name, email, password)){
-        try{
-            userService.updateUser(id, name, email, password);
-            console.log("User updated successfully!");
+    userService.verifyUser(id)
+    .then((resolve) => {
+        if(!resolve){
+            console.log("No user found with this id!");
+            return;
         }
-        catch(err){
-            console.log("Error updating user", err);
+
+        if(validateUser(name, email, password)){
+            userService.updateUser(id, name, email, password)
+            .then((resolve) => {console.log("User updated successfully!")})
+            .catch((reject) =>{console.log("Error updating user")});
         }
-    }
-    else{
-        console.log("Invalid user");
-    }
+    })
+    .catch((reject) =>{console.log("Error verifying user", reject);});
 }
 
 //createUserTable();

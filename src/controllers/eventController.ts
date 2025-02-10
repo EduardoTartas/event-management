@@ -1,85 +1,107 @@
+
 import * as eventService from '../services/eventService';
+import * as userService from '../services/userService';
 import { validateEvent} from '../utils/validations';
 
 
-export function createEventTable(): void {
-    try{
-        eventService.createEventTable();
-        console.log("Event table created successfully!");
-    }
-    catch(err){
-        console.log("Error creating event table", err);
-    }
+export function createEventTable(): void { 
+    eventService.createEventTable()
+        .then((resolve) => console.log("Event table created successfully!", resolve))
+        .catch((reject) => console.log("Error creating event table", reject));
 }
 
 export function insertIntoEvent(name: string, date: string, user_id: number): void {
-    if(validateEvent(name, date)){
-        try{
-            eventService.insertIntoEvent(name, date, user_id);
-            console.log("Event inserted successfully!");
+    userService.verifyUser(user_id)
+    .then((resolve) => {
+        if(!resolve){
+            console.log("No user found with this id!");
+            return;
         }
-        catch(err){
-            console.log("Error inserting event", err);
+
+        if(validateEvent(name, date)){
+            eventService.insertIntoEvent(name, date, user_id)
+            .then(() => console.log("Event inserted successfully!"))
+            .catch((reject) => console.log("Error inserting event", reject));
         }
-    }
-    else{
-        console.log("Invalid event");
-    }
+    })
+    .catch((reject) => console.log("Error verifying user", reject));
 }
 
-console.log( eventService.insertIntoEvent("Casamento", "10-01-2025", 10));
-
-
-export async function listAllEvents(): Promise<any> {
-    try{
-        const events = await eventService.listAllEvents();
-        console.log("Events found!");
-        console.table(events);
-    }
-    catch(err){
-        console.log("Error listing events", err);
-    }
+export function listAllEvents(): void {
+    eventService.listAllEvents()
+    .then((resolve) => {
+        if(resolve.length > 0){
+            console.log("Events found!");
+            console.table(resolve);
+        }
+        else{
+            console.log("No events found!");
+            console.log(resolve);
+        }
+        
+    })
+    .catch((reject) => {console.log("Error listing events", reject)});
 }
-
 
 export function listEventByID(id: number): void {
-    try{
-        eventService.ListEventByID(id);
-    }
-    catch(err){
-        console.log("Error listing event", err);
-    }
+    eventService.ListEventByID(id)
+    .then((resolve) => {
+        if(resolve){
+            console.log("Event found!");
+            console.table(resolve);
+        }
+        else{
+            console.log("No event found with this id!");
+        }
+    })
+    .catch((reject) => console.log("Error listing event", reject));
 }
 
 export function deleteEvent(id: number): void {
-    try{
-        eventService.deleteEvent(id);
-        console.log("Event deleted successfully!");
-    }
-    catch(err){
-        console.log("Error deleting event", err);
-    }
-    
-}
+    eventService.verifyEvent(id)
+        .then((resolve) => {
+            if (!resolve) {
+                console.log("No event found with this id!");
+                return;
+            }
 
-export function updateEvent(id: number, name: string, data: string, user_id:number): void {
-    if((validateEvent.name, data)){
-        try{
-            eventService.updateEvent(id, name, data, user_id);
-            console.log("Event updated successfully!");
-        }
-        catch(err){
-            console.log("Error updating event", err);
-        }
-    }
-    else{
-        console.log("Invalid event");
-    }
+            eventService.deleteEvent(id)
+                .then(() => console.log("Event deleted successfully!"))
+                .catch((reject) => console.log("Error deleting event", reject));
+        })
+        .catch((reject) => console.log("Error verifying event", reject));
+} 
+
+export function updateEvent(id: number, name: string, data: string, user_id: number): void {
+    userService.verifyUser(user_id)
+        .then((resolve) => {
+            if (!resolve) {
+                console.log("No user found with this id!");
+                return;
+            }
+
+            eventService.verifyEvent(id)
+                .then((resolve) => {
+                    if (!resolve) {
+                        console.log("No event found with this id!");
+                        return;
+                    }
+
+                    if (validateEvent(name, data)) {
+                        eventService.updateEvent(id, name, data, user_id)
+                            .then((resolve) => { console.log("Event updated successfully!"); })
+                            .catch((reject) => { console.log("Error updating event", reject); });
+                    }
+                })
+                .catch((reject) => { console.log("Error verifying event", reject); });
+
+        })
+        .catch((reject) => { console.log("Error verifying user", reject); });
 }
 
 //createEventTable();
-//insertIntoEvent("Casamento", "10-01-2025", 10);
+//insertIntoEvent("FEsta3", "10-01-2025", 10);
 //listAllEvents();
-//listEventByID(6);
-//deleteEvent(2);
-//updateEvent(1, "Aniversário", "10-01-2025", 10);
+//listEventByID(11);
+//deleteEvent(9);
+//updateEvent(7, "Aniversário", "10-01-2025", 7);

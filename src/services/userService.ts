@@ -1,75 +1,93 @@
 import sqlite3 from "sqlite3";
+import { promise } from "zod";
 
 const db = new sqlite3.Database("src/data/eventDB.db");
 
-export function createUserTable(): void {
-  const query = `CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)`;
-  db.run(query);
+export async function verifyUser(id:number): Promise<any>{
+  const query = `SELECT id FROM users WHERE id = ?`;
+  return new Promise((resolve, reject) => {
+      db.get(query, id, (error, row) => {
+          if (error) {
+              return reject(error);
+          }
+          return resolve(row);
+      });
+  });
 }
 
-export function insertIntoUser(
-  name: string,
-  email: string,
-  password: string
-): void {
+export async function createUserTable(): Promise<any> {
+  const query = `CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)`;
+  return new Promise((resolve, reject) => {
+    db.run(query, (error) => {
+      if (error) {
+        return reject(error);
+      }
+    });
+    return resolve(true);
+  });
+}
+
+export async function insertIntoUser(name:string, email:string, password:string): Promise<any> {
   const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
   const values = [name, email, password];
-  db.run(query, values, function (error) {
-    /*, function (error) {
-        if (error) {
-          console.error("Erro ao inserir usuário", error.message);
-        } else {
-          console.log(`Usuário ${this.lastID} inserido com sucesso!`);
-        }
-      });*/
+  return new Promise((resolve, reject) => {
+    db.run(query, values, (error) => {
+      if (error) {
+        return reject(error);
+      }
+    });
+    return resolve(true);
   });
 }
 
-export function listAllUsers(): void {
+export async function listAllUsers(): Promise<any> {
   const query = `SELECT * FROM users`;
-  db.all(query, (error, rows) => {
-    if (error) {
-      console.error("error, no users found!", error.message);
-    } else {
-      console.log("Users found!");
-      console.table(rows);
-    }
+  return new Promise((resolve, reject) => {
+    db.all(query, (error, rows) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(rows);
+    });
   });
 }
 
-export function ListUserByID(id: number): void {
+export async function ListUserByID(id: number): Promise<any> {
   const query = `SELECT * FROM users WHERE id = ?`;
-  db.get(query, id, (error, row) => {
-    if (error) {
-      console.error("Error, no user found!", error.message);
-    } else if (!row) {
-      console.error("No user found!");
-    } else {
-      console.log("User found!");
-      console.table(row);
-    }
+  return new Promise((resolve, reject) => {
+    db.get(query, id, (error, row) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(row);
+    });
   });
 }
 
-export function deleteUser(id: number): void {
+export async function deleteUser(id: number): Promise<any>{
   const query = `DELETE FROM users WHERE id = ?`;
-  const values = id;
-  db.run(query, values, function () {
-    if (this.changes === 0) {
-      console.log("No user found with this id!");
-    }
+  return new Promise((resolve, reject) =>{
+    db.run(query, id, function (error) {
+      if (error) {
+        return reject(error);
+      }
+    });
+    return resolve(true);
   });
 }
 
-export function updateUser( id: number, nome: string, email: string, senha: string): void {
+export async function updateUser( id: number, name: string, email: string, password: string): Promise<any> {
   const query = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
-  const values = [nome, email, senha, id];
-
-  db.run(query, values, function () {
-    if (this.changes === 0) {
-      console.log("No user found!");
-    }
+  const values = [name, email, password, id];
+  return new Promise((resolve, reject) =>{
+    db.run(query, values, (error) => {
+      if (error) {
+        return reject(error);
+      }
+    });
+    return resolve(true);
   });
+
 }
 
 //createUserTable();
