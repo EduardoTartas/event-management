@@ -1,4 +1,5 @@
 import sqlite3 from "sqlite3";
+import { eventModel } from "../model/eventModel";
 
 const db = new sqlite3.Database("src/data/eventDB.db");
 
@@ -26,9 +27,9 @@ export async function createEventTable(): Promise<any> {
     });
 }
 
-export async function insertIntoEvent(name: string, date: string, user_id: number): Promise<any> {
+export async function insertIntoEvent(event:eventModel): Promise<any> {
     const query = `INSERT INTO events (name, date, user_id) VALUES (?, ?, ?)`;
-    const values = [name, date, user_id];
+    const values = [event.name, event.date, event.user_id];
      return new Promise((resolve, reject) => {    
        db.run(query, values, (error) => {
             if (error){

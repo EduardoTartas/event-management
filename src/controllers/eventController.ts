@@ -3,6 +3,7 @@ import * as eventService from '../services/eventService';
 import * as userService from '../services/userService';
 import { newLog } from './logController';
 import { validateEvent} from '../utils/validations';
+import { eventModel } from '../model/eventModel';
 
 
 export function createEventTable(): void { 
@@ -15,7 +16,13 @@ export function createEventTable(): void {
 }
 
 export function insertIntoEvent(name: string, date: string, user_id: number): void {
-    userService.verifyUser(user_id)
+    const event: eventModel = {
+        name: name,
+        date: date,
+        user_id: user_id
+    }
+
+    userService.verifyUser(event.user_id)
     .then((resolve) => {
         if(!resolve){
             console.log("No user found with this id!");
@@ -23,7 +30,7 @@ export function insertIntoEvent(name: string, date: string, user_id: number): vo
         }
 
         if(validateEvent(name, date)){
-            eventService.insertIntoEvent(name, date, user_id)
+            eventService.insertIntoEvent(event)
             .then(() => {
                 console.log("Event inserted successfully!")
                 newLog("Event inserted successfully!");

@@ -1,5 +1,6 @@
 import sqlite3 from "sqlite3";
 import { promise } from "zod";
+import { userModel } from "../model/userModel";
 
 const db = new sqlite3.Database("src/data/eventDB.db");
 
@@ -27,9 +28,9 @@ export async function createUserTable(): Promise<any> {
   });
 }
 
-export async function insertIntoUser(name:string, email:string, password:string): Promise<any> {
+export async function insertIntoUser(user:userModel): Promise<any> {
   const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-  const values = [name, email, password];
+  const values = [user.name, user.email, user.password];
   return new Promise((resolve, reject) => {
     db.run(query, values, (error) => {
       if (error) {

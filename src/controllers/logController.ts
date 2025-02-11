@@ -9,7 +9,7 @@ export function createLogTable(): void {
 
 export function insertIntoLog(log:logModel): void {  
     logService.insertIntoLog(log)
-        .then(() => console.log("Log inserted successfully!"))
+        .then()
         .catch((reject) => console.log("Error inserting log", reject));
 }
 

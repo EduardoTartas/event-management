@@ -1,3 +1,4 @@
+import { userModel } from '../model/userModel';
 import * as userService from '../services/userService';
 import { validateUser } from '../utils/validations';
 import { newLog } from './logController';
@@ -12,8 +13,13 @@ export function createUserTable(): void {
 }
 
 export function insertIntoUser(name: string, email: string, password: string): void {
-    if(validateUser(name, email, password)){
-        userService.insertIntoUser(name, email, password)
+    const user:userModel = {
+        name: name,
+        email: email,
+        password: password
+    }
+    if(validateUser(user.name, user.email, user.password)){
+        userService.insertIntoUser(user)
         .then((resolve) => {
             console.log("User inserted successfully!", resolve)
             newLog("User inserted successfully!");
