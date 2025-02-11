@@ -2,16 +2,21 @@ import { eventModel } from './model/eventModel';
 import * as userControllers from "../src/controllers/userController";
 import * as eventControllers from "../src/controllers/eventController";
 import * as logControllers from "../src/controllers/logController";
+
+//descomentar a linha que deseja testar
+
 //logControllers.createLogTable();
 
-//userControllers.deleteUser(12);
-//userControllers.insertIntoUser("teste", "teste@gmail.com", "tesHGFHG324te");
-//userControllers.listUserByID(3);
-//userControllers.updateUser(3, "funfo", "teste@gmail.com", "dsagHGJHG423");
+//userControllers.createUserTable();
+//userControllers.insertIntoUser();     //passar name, email, password
+//userControllers.deleteUser();         //passar id do usuario
+//userControllers.listUserByID();       //passar id do usuario
+//userControllers.listAllUsers();       
+//userControllers.updateUser();         //passar id, name, email, password
 
-//eventControllers.listAllEvents();
-//eventControllers.listEventByID(7);
 //eventControllers.createEventTable();
-//eventControllers.insertIntoEvent("name","10-07-2019", 3);
-//eventControllers.deleteEvent(10);
-//eventControllers.updateEvent(8,"funfo", "02-01-2001", 5 )
+//eventControllers.insertIntoEvent();   //passar nome, data e id do usuario
+//eventControllers.deleteEvent();       //passar id do evento
+//eventControllers.listEventByID();     //passar id do evento
+//eventControllers.listAllEvents();     
+//eventControllers.updateEvent()        //passar id, nome, data e id do usuario
