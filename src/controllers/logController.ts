@@ -14,7 +14,7 @@ export function insertIntoLog(log:logModel): void {
 }
 
 export function newLog(info: string): void {
-    const date = ("0" + new Date().getDay() + "-0" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear());
+    const date = new Date().toLocaleDateString('pt-BR').split('/').join('-');
     const log:logModel = {
         info: info,
         date: date
