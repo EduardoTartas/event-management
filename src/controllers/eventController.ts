@@ -1,12 +1,16 @@
 
 import * as eventService from '../services/eventService';
 import * as userService from '../services/userService';
+import { newLog } from './logController';
 import { validateEvent} from '../utils/validations';
 
 
 export function createEventTable(): void { 
     eventService.createEventTable()
-        .then((resolve) => console.log("Event table created successfully!", resolve))
+        .then((resolve) => {
+            console.log("Event table created successfully!", resolve)
+            newLog("Event table created successfully!");
+        })
         .catch((reject) => console.log("Error creating event table", reject));
 }
 
@@ -20,7 +24,10 @@ export function insertIntoEvent(name: string, date: string, user_id: number): vo
 
         if(validateEvent(name, date)){
             eventService.insertIntoEvent(name, date, user_id)
-            .then(() => console.log("Event inserted successfully!"))
+            .then(() => {
+                console.log("Event inserted successfully!")
+                newLog("Event inserted successfully!");
+            })
             .catch((reject) => console.log("Error inserting event", reject));
         }
     })
@@ -33,6 +40,7 @@ export function listAllEvents(): void {
         if(resolve.length > 0){
             console.log("Events found!");
             console.table(resolve);
+            newLog("All events listed successfully!");
         }
         else{
             console.log("No events found!");
@@ -49,6 +57,7 @@ export function listEventByID(id: number): void {
         if(resolve){
             console.log("Event found!");
             console.table(resolve);
+            newLog("Event listed successfully!");
         }
         else{
             console.log("No event found with this id!");
@@ -66,7 +75,10 @@ export function deleteEvent(id: number): void {
             }
 
             eventService.deleteEvent(id)
-                .then(() => console.log("Event deleted successfully!"))
+                .then(() => {
+                    console.log("Event deleted successfully!")
+                    newLog("Event deleted successfully!");
+                })
                 .catch((reject) => console.log("Error deleting event", reject));
         })
         .catch((reject) => console.log("Error verifying event", reject));
@@ -89,7 +101,10 @@ export function updateEvent(id: number, name: string, data: string, user_id: num
 
                     if (validateEvent(name, data)) {
                         eventService.updateEvent(id, name, data, user_id)
-                            .then((resolve) => { console.log("Event updated successfully!"); })
+                            .then((resolve) => {
+                                 console.log("Event updated successfully!"); 
+                                newLog("Event updated successfully!");
+                            })
                             .catch((reject) => { console.log("Error updating event", reject); });
                     }
                 })

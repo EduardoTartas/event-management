@@ -1,16 +1,23 @@
 import * as userService from '../services/userService';
 import { validateUser } from '../utils/validations';
+import { newLog } from './logController';
 
 export function createUserTable(): void {
     userService.createUserTable()
-        .then((resolve) => console.log("User table created successfully!", resolve))
+        .then((resolve) => {
+            console.log("User table created successfully!", resolve);
+            newLog("User table created successfully!");    
+        })
         .catch((reject) => console.log("Error creating user table", reject));
 }
 
 export function insertIntoUser(name: string, email: string, password: string): void {
     if(validateUser(name, email, password)){
         userService.insertIntoUser(name, email, password)
-        .then((resolve) => console.log("User inserted successfully!", resolve))
+        .then((resolve) => {
+            console.log("User inserted successfully!", resolve)
+            newLog("User inserted successfully!");
+        })
         .catch((reject) => console.log("Error inserting user", reject)); 
     }
 }
@@ -21,6 +28,7 @@ export function listAllUsers(): void {
             if (resolve.length > 0) {
                 console.log("Users found!");
                 console.table(resolve);
+                newLog("All users listed successfully!");
             }
             else {
                 console.log("No users found!");
@@ -36,6 +44,7 @@ export function listUserByID(id: number): void {
         if(resolve){
             console.log("User found!");
             console.table(resolve);
+            newLog("User listed successfully!");
         }
         else{
             console.log("No user found with this id!");
@@ -53,7 +62,10 @@ export function deleteUser(id: number): void {
         }
 
         userService.deleteUser(id)
-        .then(() => {console.log("User deleted successfully!")})
+        .then(() => {
+            console.log("User deleted successfully!");
+            newLog("User deleted successfully!");
+        })
         .catch((reject) => {console.log("Erro deleting user", reject)});
     })
     .catch((reject) =>{console.log("Error verifying user", reject)});
@@ -69,7 +81,10 @@ export function updateUser(id: number, name: string, email: string, password: st
 
         if(validateUser(name, email, password)){
             userService.updateUser(id, name, email, password)
-            .then((resolve) => {console.log("User updated successfully!")})
+            .then((resolve) => {
+                console.log("User updated successfully!");
+                newLog("User updated successfully!");
+            })
             .catch((reject) =>{console.log("Error updating user")});
         }
     })

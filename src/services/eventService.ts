@@ -1,5 +1,4 @@
 import sqlite3 from "sqlite3";
-import { promise } from "zod";
 
 const db = new sqlite3.Database("src/data/eventDB.db");
 
