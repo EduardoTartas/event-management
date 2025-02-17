@@ -1,5 +1,6 @@
 import { logModel } from '../model/logModel';
 import * as logService from '../services/logService';
+import { currentUser } from './loginController';
 
 export function createLogTable(): void {
     logService.createLogTable()
@@ -16,7 +17,7 @@ export function insertIntoLog(log:logModel): void {
 export function newLog(info: string): void {
     const date = new Date().toLocaleDateString('pt-BR').split('/').join('-');
     const log:logModel = {
-        info: info,
+        info: `Current user: ${currentUser.id} - ${info}`,
         date: date
     }
     insertIntoLog(log);
