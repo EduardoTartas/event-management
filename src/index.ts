@@ -3,17 +3,17 @@ import * as eventControllers from "../src/controllers/eventController";
 import * as logControllers from "../src/controllers/logController";
 import * as loginControllers from "../src/controllers/loginController";
 
-//descomentar a linha que deseja testar
 
 //logControllers.createLogTable();
-//userControllers.createUserTable();
+userControllers.createUserTable();
 //eventControllers.createEventTable();
 
-loginControllers.userLogin("Eduardo", "Max123456im!");
+// Inserir usuário admin
 
 //userControllers.insertIntoUser("Eduardo", "eduardo@gmail.com", "Max123456im!");     //passar name, email, password
 //userControllers.deleteUser();         //passar id do usuario
-//userControllers.listUserByID();       //passar id do usuario
+//userControllers.listUserByID(1);       //passar id do usuario
+//loginControllers.userLogin("Eduardo", "Max123456im!"); //passar name, password
 //userControllers.listAllUsers();       
 //userControllers.updateUser();         //passar id, name, email, password
 

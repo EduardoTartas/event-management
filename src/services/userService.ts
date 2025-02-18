@@ -1,18 +1,15 @@
-import sqlite3 from "sqlite3";
-import { promise } from "zod";
 import { userModel } from "../model/userModel";
+import { db } from "../configs/sqlClient";
 
-const db = new sqlite3.Database("src/data/eventDB.db");
-
-export async function verifyUser(id:number): Promise<any>{
+export async function verifyUser(id: number): Promise<any> {
   const query = `SELECT id FROM users WHERE id = ?`;
   return new Promise((resolve, reject) => {
-      db.get(query, id, (error, row) => {
-          if (error) {
-              return reject(error);
-          }
-          return resolve(row);
-      });
+    db.get(query, id, (error, row) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(row);
+    });
   });
 }
 
@@ -28,7 +25,7 @@ export async function createUserTable(): Promise<any> {
   });
 }
 
-export async function insertIntoUser(user:userModel): Promise<any> {
+export async function insertIntoUser(user: userModel): Promise<any> {
   const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
   const values = [user.name, user.email, user.password];
   return new Promise((resolve, reject) => {
@@ -65,9 +62,9 @@ export async function ListUserByID(id: number): Promise<any> {
   });
 }
 
-export async function deleteUser(id: number): Promise<any>{
+export async function deleteUser(id: number): Promise<any> {
   const query = `DELETE FROM users WHERE id = ?`;
-  return new Promise((resolve, reject) =>{
+  return new Promise((resolve, reject) => {
     db.run(query, id, function (error) {
       if (error) {
         return reject(error);
@@ -77,10 +74,10 @@ export async function deleteUser(id: number): Promise<any>{
   });
 }
 
-export async function updateUser( id: number, name: string, email: string, password: string): Promise<any> {
+export async function updateUser(id: number, name: string, email: string, password: string): Promise<any> {
   const query = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
   const values = [name, email, password, id];
-  return new Promise((resolve, reject) =>{
+  return new Promise((resolve, reject) => {
     db.run(query, values, (error) => {
       if (error) {
         return reject(error);
@@ -88,7 +85,6 @@ export async function updateUser( id: number, name: string, email: string, passw
     });
     return resolve(true);
   });
-
 }
 
 //createUserTable();

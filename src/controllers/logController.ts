@@ -1,24 +1,22 @@
-import { logModel } from '../model/logModel';
-import * as logService from '../services/logService';
-import { currentUser } from './loginController';
+import { logModel } from "../model/logModel";
+import * as logService from "../services/logService";
+import { currentUser } from "./loginController";
 
 export function createLogTable(): void {
-    logService.createLogTable()
-        .then((resolve) => console.log("Log table created successfully!", resolve))
-        .catch((reject) => console.log("Error creating log table", reject));
+  logService
+    .createLogTable()
+    .then((resolve) => console.log("Log table created successfully!", resolve))
+    .catch((reject) => console.log("Error creating log table", reject));
 }
 
-export function insertIntoLog(log:logModel): void {  
-    logService.insertIntoLog(log)
-        .then()
-        .catch((reject) => console.log("Error inserting log", reject));
-}
 
 export function newLog(info: string): void {
-    const date = new Date().toLocaleDateString('pt-BR').split('/').join('-');
-    const log:logModel = {
-        info: `Current user: ${currentUser.id} - ${info}`,
-        date: date
-    }
-    insertIntoLog(log);
+  const date = new Date().toLocaleDateString("pt-BR").split("/").join("-");
+  const log: logModel = {
+    info: `User: ${currentUser.name} (ID: ${currentUser.id}) - ${info}`,
+    date: date,
+  };
+  logService.insertIntoLog(log)
+  .then()
+  .catch((reject) => console.log("Error inserting log", reject));
 }

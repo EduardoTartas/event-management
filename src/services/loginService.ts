@@ -1,20 +1,14 @@
-import UserRepository from "../repository/user";
+import { db } from "../configs/sqlClient";
 
-
-class UserServices {
-    
-    static async userLogin(nameQuery: string, passwordQuery: string): Promise<any> {
-        const {name, password} = await UserRepository.userList(nameQuery);
-        console.log(password);
-        
-        if (passwordQuery === password) {
-            return {name, password};
-        }
-        console.log("Senha incorreta");
-
-
-    }
-    
+export async function userLogin(name: string, password: string): Promise<any> {
+  const query = "SELECT * FROM users WHERE name = ? AND password = ?";
+  const values = [name, password];
+  return new Promise((resolve, reject) => {
+    db.get(query, values, (error, row) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(row);
+    });
+  });
 }
-
-export default UserServices;
