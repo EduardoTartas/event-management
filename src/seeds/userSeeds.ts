@@ -7,12 +7,12 @@ export const userSeeds: userModel[] = [];
 export function generateUser(): void {
     for (let i = 0; i < 10; i++) {
         const user: userModel = {
-            id: i,
-            name: faker.name.fullName(),
+            id: faker.string.uuid(),
+            name: faker.person.fullName(),
             email: faker.internet.email(),
             password: faker.internet.password()
         }
-        insertIntoUser(user);
+        insertIntoUser(user).catch((reject) => console.log("Error on inserting user seeds",reject));
         userSeeds.push(user);
     }
 }

@@ -1,13 +1,12 @@
-import { validateUser } from "../utils/validations";
 import { newLog } from "./logController";
 import { userModel } from "../model/userModel";
 import * as loginService from "../services/loginService";
 
 export let currentUser: userModel;
 
-export async function userLogin(name: string, password: string): Promise<any> {
+export async function userLogin(email: string, password: string): Promise<any> {
   loginService
-    .userLogin(name, password)
+    .userLogin(email, password)
     .then((resolve) => {
       if (resolve) {
         currentUser = resolve;

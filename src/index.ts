@@ -1,11 +1,42 @@
-import * as userControllers from "../src/controllers/userController";
-import * as eventControllers from "../src/controllers/eventController";
-import * as logControllers from "../src/controllers/logController";
-import * as loginControllers from "../src/controllers/loginController";
+function clear(){console.log('\x1Bc')}
+import * as userControllers from "./controllers/userController";
+import * as eventControllers from "./controllers/eventController";
+import * as logControllers from "./controllers/logController";
+import * as loginControllers from "./controllers/loginController";
+import inquirer from 'inquirer';
+import { currentUser } from './controllers/loginController';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //logControllers.createLogTable();
-userControllers.createUserTable();
+//userControllers.createUserTable();
 //eventControllers.createEventTable();
 
 // Inserir usuário admin
@@ -22,3 +53,5 @@ userControllers.createUserTable();
 //eventControllers.listEventByID();     //passar id do evento
 //eventControllers.listAllEvents();     
 //eventControllers.updateEvent()        //passar id, nome, data e id do usuario
+
+

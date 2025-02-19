@@ -2,7 +2,7 @@ import { eventModel } from "../model/eventModel";
 import { db } from "../configs/sqlClient";
 
 export async function createEventTable(): Promise<any> {
-  const query = `CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, date TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id))`;
+  const query = `CREATE TABLE IF NOT EXISTS events (id TEXT PRIMARY KEY, name TEXT, date TEXT, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES users(id))`;
   return new Promise((resolve, reject) => {
     db.run(query, (error) => {
       if (error) {
@@ -14,8 +14,8 @@ export async function createEventTable(): Promise<any> {
 }
 
 export async function insertIntoEvent(event: eventModel): Promise<any> {
-  const query = `INSERT INTO events (name, date, user_id) VALUES (?, ?, ?)`;
-  const values = [event.name, event.date, event.user_id];
+  const query = `INSERT INTO events (id, name, date, user_id) VALUES (?, ?, ?, ?)`;
+  const values = [event.id, event.name, event.date, event.user_id];
   return new Promise((resolve, reject) => {
     db.run(query, values, (error) => {
       if (error) {
@@ -38,7 +38,7 @@ export async function listAllEvents(): Promise<any> {
   });
 }
 
-export async function ListEventByID(id: number): Promise<any> {
+export async function ListEventByID(id: string): Promise<any> {
   const query = `SELECT * FROM events WHERE id = ?`;
   return new Promise((resolve, reject) => {
     db.get(query, id, (error, row) => {
@@ -50,7 +50,7 @@ export async function ListEventByID(id: number): Promise<any> {
   });
 }
 
-export async function deleteEvent(id: number): Promise<any> {
+export async function deleteEvent(id: string): Promise<any> {
   const query = `DELETE FROM events WHERE id >= ?`;
   return new Promise((resolve, reject) => {
     db.run(query, id, function (error) {
@@ -63,10 +63,10 @@ export async function deleteEvent(id: number): Promise<any> {
 }
 
 export async function updateEvent(
-  id: number,
+  id: string,
   name: string,
   date: string,
-  user_id: number
+  user_id: string
 ): Promise<any> {
   const query = `UPDATE events SET name = ?, date = ?, user_id = ? WHERE id = ?`;
   const values = [name, date, user_id, id];

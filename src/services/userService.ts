@@ -1,7 +1,7 @@
 import { userModel } from "../model/userModel";
 import { db } from "../configs/sqlClient";
 
-export async function verifyUser(id: number): Promise<any> {
+export async function verifyUser(id: string): Promise<any> {
   const query = `SELECT id FROM users WHERE id = ?`;
   return new Promise((resolve, reject) => {
     db.get(query, id, (error, row) => {
@@ -14,7 +14,7 @@ export async function verifyUser(id: number): Promise<any> {
 }
 
 export async function createUserTable(): Promise<any> {
-  const query = `CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)`;
+  const query = `CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, email TEXT, password TEXT)`;
   return new Promise((resolve, reject) => {
     db.run(query, (error) => {
       if (error) {
@@ -26,8 +26,8 @@ export async function createUserTable(): Promise<any> {
 }
 
 export async function insertIntoUser(user: userModel): Promise<any> {
-  const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-  const values = [user.name, user.email, user.password];
+  const query = `INSERT INTO users (id, name, email, password) VALUES (?, ?, ?, ?)`;
+  const values = [user.id, user.name, user.email, user.password];
   return new Promise((resolve, reject) => {
     db.run(query, values, (error) => {
       if (error) {
@@ -50,7 +50,7 @@ export async function listAllUsers(): Promise<any> {
   });
 }
 
-export async function ListUserByID(id: number): Promise<any> {
+export async function ListUserByID(id: string): Promise<any> {
   const query = `SELECT * FROM users WHERE id = ?`;
   return new Promise((resolve, reject) => {
     db.get(query, id, (error, row) => {
@@ -62,7 +62,7 @@ export async function ListUserByID(id: number): Promise<any> {
   });
 }
 
-export async function deleteUser(id: number): Promise<any> {
+export async function deleteUser(id: string): Promise<any> {
   const query = `DELETE FROM users WHERE id = ?`;
   return new Promise((resolve, reject) => {
     db.run(query, id, function (error) {
@@ -74,7 +74,7 @@ export async function deleteUser(id: number): Promise<any> {
   });
 }
 
-export async function updateUser(id: number, name: string, email: string, password: string): Promise<any> {
+export async function updateUser(id: string, name: string, email: string, password: string): Promise<any> {
   const query = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
   const values = [name, email, password, id];
   return new Promise((resolve, reject) => {

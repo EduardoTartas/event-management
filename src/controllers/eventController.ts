@@ -3,13 +3,15 @@ import * as userService from "../services/userService";
 import { newLog } from "./logController";
 import { validateEvent } from "../utils/validations";
 import { eventModel } from "../model/eventModel";
+import { generateEvent } from "../seeds/eventSeeds";
+import { v4 as uuid } from 'uuid';
 
 export function createEventTable(): void {
   eventService
     .createEventTable()
     .then((resolve) => {
       console.log("Event table created successfully!", resolve);
-        
+        //generateEvent();
       //newLog("Event table created successfully!");
     })
     .catch((reject) => {
@@ -18,12 +20,9 @@ export function createEventTable(): void {
     });
 }
 
-export function insertIntoEvent(
-  name: string,
-  date: string,
-  user_id: number
-): void {
+export function insertIntoEvent(name: string, date: string, user_id: string): void {
   const event: eventModel = {
+    id: uuid(),
     name: name,
     date: date,
     user_id: user_id,
@@ -72,7 +71,7 @@ export function listAllEvents(): void {
     });
 }
 
-export function listEventByID(id: number): void {
+export function listEventByID(id: string): void {
   eventService
     .ListEventByID(id)
     .then((resolve) => {
@@ -90,7 +89,7 @@ export function listEventByID(id: number): void {
     });
 }
 
-export function deleteEvent(id: number): void {
+export function deleteEvent(id: string): void {
   eventService
     .ListEventByID(id)
     .then((resolve) => {
@@ -114,10 +113,10 @@ export function deleteEvent(id: number): void {
 }
 
 export function updateEvent(
-  id: number,
+  id: string,
   name: string,
   data: string,
-  user_id: number
+  user_id: string
 ): void {
   userService
     .verifyUser(user_id)

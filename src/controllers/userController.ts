@@ -3,24 +3,22 @@ import * as userService from "../services/userService";
 import { validateUser } from "../utils/validations";
 import { newLog } from "./logController";
 import {generateUser} from "../seeds/userSeeds";
+import { v4 as uuid } from 'uuid';
 
 export function createUserTable(): void {
   userService
     .createUserTable()
     .then((resolve) => {
       console.log("User table created successfully!", resolve);
-      generateUser();
+      //generateUser();
       //newLog("User table created successfully!");
     })
     .catch((reject) => console.log("Error creating user table", reject));
 }
 
-export function insertIntoUser(
-  name: string,
-  email: string,
-  password: string
-): void {
+export function insertIntoUser(name: string, email: string, password: string): void {
   const user: userModel = {
+    id: uuid(),
     name: name,
     email: email,
     password: password,
@@ -58,7 +56,7 @@ export function listAllUsers(): void {
     });
 }
 
-export function listUserByID(id: number): void {
+export function listUserByID(id: string): void {
   userService
     .ListUserByID(id)
     .then((resolve) => {
@@ -76,7 +74,7 @@ export function listUserByID(id: number): void {
     });
 }
 
-export function deleteUser(id: number): void {
+export function deleteUser(id: string): void {
   userService
     .ListUserByID(id)
     .then((resolve) => {
@@ -101,7 +99,7 @@ export function deleteUser(id: number): void {
     });
 }
 
-export function updateUser(id: number, name: string, email: string, password: string): void {
+export function updateUser(id: string, name: string, email: string, password: string): void {
     userService
     .ListUserByID(id)
     .then((resolve) => {
