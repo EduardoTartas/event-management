@@ -15,7 +15,7 @@ export async function createLogTable(): Promise<any> {
 }
 
 export async function insertIntoLog(log: logModel): Promise<any> {
-  const path = "./src/data/logs.log";
+  const path = "./data/logs.log";
   const row = `${log.info} - ${log.date}\n`;
   return new Promise((resolve, reject) => {
     fs.appendFile(path, row, 'utf-8', (error) => {
