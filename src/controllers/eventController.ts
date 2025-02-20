@@ -3,7 +3,6 @@ import * as userService from "../services/userService";
 import { newLog } from "./logController";
 import { validateEvent } from "../utils/validations";
 import { eventModel } from "../model/eventModel";
-import { generateEvent } from "../seeds/eventSeeds";
 import { v4 as uuid } from 'uuid';
 
 export function createEventTable(): void {

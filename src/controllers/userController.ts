@@ -8,15 +8,20 @@ export function createUserTable(): void {
   userService
     .createUserTable()
     .then(() => {
-      const user: userModel = {
-        id: uuid(),
-        name: "admin",
-        email: "admin",
-        password: "admin",
-      };
-      userService.insertIntoUser(user);
-      //console.log("User table created successfully!", resolve);
-      //newLog("User table created successfully!");
+      userService
+        .listAllUsers()
+        .then((users) => {
+          if (users.length === 0) {
+            const user: userModel = {
+              id: uuid(),
+              name: "admin",
+              email: "admin",
+              password: "admin",
+            };
+            userService.insertIntoUser(user).then(() => {return});
+          }
+        })
+        .catch((reject) => console.log("Error listing users", reject));
     })
     .catch((reject) => console.log("Error creating user table", reject));
 }
