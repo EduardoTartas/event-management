@@ -1,12 +1,13 @@
 import inquirer from "inquirer";
 import * as eventControllers from "../controllers/eventController";
+import { generateEvent } from "../seeds/eventSeeds";
 
-export async function manageEventsMenu() {
+export async function manageEventsMenu(): Promise<void> {
   const { manageEventsMenuOption } = await inquirer.prompt([
     {
       message: "Select an option",
       type: "list",
-      choices: ["List all events", "List an event by ID", "Insert a new event", "Update an event", "Delete an event",],
+      choices: ["List all events", "List an event by ID", "Insert a new event", "Update an event", "Delete an event","Load events from seeds"],
       name: "manageEventsMenuOption",
     },
   ]);
@@ -31,11 +32,15 @@ export async function manageEventsMenu() {
     case "Delete an event":
       await manageEventsDelete();
       break;
+
+    case "Load events from seeds":
+      generateEvent();
+      break;
   }
 
 }
 
-async function manageEventsListByID() {
+async function manageEventsListByID(): Promise<void> {
   const { eventID } = await inquirer.prompt([
     {
       message: "Please write the event ID",
@@ -47,7 +52,7 @@ async function manageEventsListByID() {
   eventControllers.listEventByID(eventID);
 }
 
-async function manageEventsInsert() {
+async function manageEventsInsert(): Promise<void> {
   const { eventName, eventDate, eventUserID } = await inquirer.prompt([
     {
       message: "Please write the event name",
@@ -69,7 +74,7 @@ async function manageEventsInsert() {
   eventControllers.insertIntoEvent(eventName, eventDate, eventUserID);
 }
 
-async function manageEventsUpdate() {
+async function manageEventsUpdate(): Promise<void> {
   const { eventID, updateName, updateDate, updateUserID } = await inquirer.prompt([
     {
       message: "Please write the event ID",
@@ -96,7 +101,7 @@ async function manageEventsUpdate() {
   eventControllers.updateEvent(eventID, updateName, updateDate, updateUserID);
 }
 
-async function manageEventsDelete() {
+async function manageEventsDelete(): Promise<void> {
   const { eventID } = await inquirer.prompt([
     {
       message: "Please write the event ID",

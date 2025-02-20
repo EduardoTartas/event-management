@@ -1,18 +1,13 @@
 import inquirer from "inquirer";
 import * as userControllers from "../controllers/userController";
+import { generateUser } from "../seeds/userSeeds";
 
 export async function manageUsersMenu() {
   const { manageUsersMenuOption } = await inquirer.prompt([
     {
       message: "Select an option",
       type: "list",
-      choices: [
-        "List all users",
-        "List a user by ID",
-        "Insert a new user",
-        "Update a user",
-        "Delete a user",
-      ],
+      choices: ["List all users", "List a user by ID", "Insert a new user", "Update a user", "Delete a user", "Load users from seeds"],
       name: "manageUsersMenuOption",
     },
   ]);
@@ -37,7 +32,11 @@ export async function manageUsersMenu() {
     case "Delete a user":
       await manageUsersDelete();
       break;
-  }
+
+    case "Load users from seeds":
+      generateUser();
+      break;
+    }
 
 }
 

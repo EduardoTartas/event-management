@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid';
 export function createUserTable(): void {
   userService
     .createUserTable()
-    .then((resolve) => {
+    .then(() => {
       const user: userModel = {
         id: uuid(),
         name: "admin",
@@ -16,7 +16,6 @@ export function createUserTable(): void {
       };
       userService.insertIntoUser(user);
       //console.log("User table created successfully!", resolve);
-      //generateUser();
       //newLog("User table created successfully!");
     })
     .catch((reject) => console.log("Error creating user table", reject));
@@ -47,9 +46,10 @@ export function listAllUsers(): void {
   userService
     .listAllUsers()
     .then((resolve) => {
+      resolve=resolve.slice(1);
       if (resolve.length > 0) {
         console.log("Users found!");
-        console.table(resolve);
+        console.table(resolve); // Skip the first line
         newLog("All users listed successfully!");
       } else {
         console.log("No users found!");
