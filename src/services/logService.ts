@@ -1,5 +1,6 @@
 import { logModel } from "../model/logModel";
 import { db } from "../configs/sqlClient";
+import * as fs from 'fs';
 
 export async function createLogTable(): Promise<any> {
   const query = `CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, info TEXT, date TEXT)`;
@@ -14,14 +15,30 @@ export async function createLogTable(): Promise<any> {
 }
 
 export async function insertIntoLog(log: logModel): Promise<any> {
-  const query = `INSERT INTO logs (info, date) VALUES (?, ?)`;
-  const values = [log.info, log.date];
+  const path = "./src/data/logs.log";
+  const row = `${log.info} - ${log.date}\n`;
   return new Promise((resolve, reject) => {
-    db.run(query, values, (error) => {
+    fs.appendFile(path, row, 'utf-8', (error) => {
       if (error) {
         return reject(error);
       }
+      return resolve(true);
     });
-    return resolve(true);
   });
 }
+
+/*
+export function saveAsCsv(): void {
+    const row = users.map(user => {
+        return `${user.id},${user.name},${user.email},${user.password},${user.role.name},${user.registerDate.toISOString()},${user.lastEdit.toISOString()},${user.status}`;
+    }).join('\n');
+
+    fs.writeFile(usersFilePath, row, 'utf-8', (error) => {
+        if (error) {
+            clear();
+            console.log(`${chalk.bold("ERROR!009: ")}Erro ao salvar usuários.`);
+        }
+    });
+}
+
+*/

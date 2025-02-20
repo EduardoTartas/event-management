@@ -10,8 +10,7 @@ export function createEventTable(): void {
   eventService
     .createEventTable()
     .then((resolve) => {
-      console.log("Event table created successfully!", resolve);
-        //generateEvent();
+      //console.log("Event table created successfully!", resolve);
       //newLog("Event table created successfully!");
     })
     .catch((reject) => {

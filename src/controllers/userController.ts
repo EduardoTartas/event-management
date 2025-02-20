@@ -2,14 +2,20 @@ import { userModel } from "../model/userModel";
 import * as userService from "../services/userService";
 import { validateUser } from "../utils/validations";
 import { newLog } from "./logController";
-import {generateUser} from "../seeds/userSeeds";
 import { v4 as uuid } from 'uuid';
 
 export function createUserTable(): void {
   userService
     .createUserTable()
     .then((resolve) => {
-      console.log("User table created successfully!", resolve);
+      const user: userModel = {
+        id: uuid(),
+        name: "admin",
+        email: "admin",
+        password: "admin",
+      };
+      userService.insertIntoUser(user);
+      //console.log("User table created successfully!", resolve);
       //generateUser();
       //newLog("User table created successfully!");
     })
@@ -88,6 +94,7 @@ export function deleteUser(id: string): void {
         .then(() => {
           console.log("User deleted successfully!");
           newLog(`User ${resolve.name} deleted successfully!`);
+
         })
         .catch((reject) => {
           console.log("Error deleting user", reject);

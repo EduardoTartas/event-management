@@ -5,7 +5,9 @@ import { currentUser } from "./loginController";
 export function createLogTable(): void {
   logService
     .createLogTable()
-    .then((resolve) => console.log("Log table created successfully!", resolve))
+    .then((resolve) => {
+      //console.log("Log table created successfully!", resolve)
+    })
     .catch((reject) => console.log("Error creating log table", reject));
 }
 
