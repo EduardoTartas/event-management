@@ -1,95 +1,39 @@
 import { userModel } from "../model/userModel";
-import { db } from "../configs/sqlClient";
+import { db2 } from "../db/dbConfig";
+import { usersTable } from "../db/schema/userSchema";
+import { eq } from "drizzle-orm";
 
 export async function verifyUser(id: string): Promise<any> {
-  const query = `SELECT id FROM users WHERE id = ?`;
-  return new Promise((resolve, reject) => {
-    db.get(query, id, (error, row) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(row);
-    });
-  });
+  const result = await db2.select().from(usersTable).where(eq(usersTable.id, id));
+  return result.length > 0 ? result : null;
 }
 
-export async function createUserTable(): Promise<any> {
-  const query = `CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, email TEXT, password TEXT)`;
-  return new Promise((resolve, reject) => {
-    db.run(query, (error) => {
-      if (error) {
-        return reject(error);
-      }
-    });
-    return resolve(true);
-  });
-}
-
-export async function insertIntoUser(user: userModel): Promise<any> {
-  const query = `INSERT INTO users (id, name, email, password) VALUES (?, ?, ?, ?)`;
-  const values = [user.id, user.name, user.email, user.password];
-  return new Promise((resolve, reject) => {
-    db.run(query, values, (error) => {
-      if (error) {
-        return reject(error);
-      }
-    });
-    return resolve(true);
+export const insertUserService = async (user: userModel) => {
+  return await db2.insert(usersTable).values({
+    id: user.id || '',
+    name: user.name,
+    email: user.email,
+    password: user.password
   });
 }
 
 export async function listAllUsers(): Promise<any> {
-  const query = `SELECT * FROM users`;
-  return new Promise((resolve, reject) => {
-    db.all(query, (error, rows) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(rows);
-    });
-  });
+  return await db2.select().from(usersTable);
 }
 
 export async function ListUserByID(id: string): Promise<any> {
-  const query = `SELECT * FROM users WHERE id = ?`;
-  return new Promise((resolve, reject) => {
-    db.get(query, id, (error, row) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(row);
-    });
-  });
+  const result = await db2.select().from(usersTable).where(eq(usersTable.id, id));
+  return result.length > 0 ? result : null;
 }
 
 export async function deleteUser(id: string): Promise<any> {
-  const query = `DELETE FROM users WHERE id = ?`;
-  return new Promise((resolve, reject) => {
-    db.run(query, id, function (error) {
-      if (error) {
-        return reject(error);
-      }
-    });
-    return resolve(true);
-  });
+  return await db2.delete(usersTable).where(eq(usersTable.id, id));
 }
 
 export async function updateUser(id: string, name: string, email: string, password: string): Promise<any> {
-  const query = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
-  const values = [name, email, password, id];
-  return new Promise((resolve, reject) => {
-    db.run(query, values, (error) => {
-      if (error) {
-        return reject(error);
-      }
-    });
-    return resolve(true);
-  });
+  return await db2.update(usersTable).set({
+    name: name,
+    email: email,
+    password: password
+  }).where(eq(usersTable.id, id));
 }
-
-//createUserTable();
-//insertIntoUser("teste", "qwe", "123456")
-//listAllUsers();
-//ListUserByID(3);
-//deleteUser(3);
-//atualizarUsuario(1,"eduardo", "teste", "12314243");

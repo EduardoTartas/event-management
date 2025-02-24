@@ -1,14 +1,8 @@
-import { db } from "../configs/sqlClient";
+import { db2 } from "../db/dbConfig";
+import { usersTable } from "../db/schema/userSchema";
+import { eq, and } from "drizzle-orm";
 
 export async function userLogin(email: string, password: string): Promise<any> {
-  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
-  const values = [email, password];
-  return new Promise((resolve, reject) => {
-    db.get(query, values, (error, row) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(row);
-    });
-  });
+  const result = await db2.select().from(usersTable).where(and(eq(usersTable.email, email), eq(usersTable.password, password)));
+  return result.length > 0 ? result[0] : null;
 }
