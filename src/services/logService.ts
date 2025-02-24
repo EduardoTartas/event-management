@@ -1,18 +1,5 @@
 import { logModel } from "../model/logModel";
-import { db } from "../configs/sqlClient";
 import * as fs from 'fs';
-
-export async function createLogTable(): Promise<any> {
-  const query = `CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY AUTOINCREMENT, info TEXT, date TEXT)`;
-  return new Promise((resolve, reject) => {
-    db.run(query, (error) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(true);
-    });
-  });
-}
 
 export async function insertIntoLog(log: logModel): Promise<any> {
   const path = "./data/logs.log";
