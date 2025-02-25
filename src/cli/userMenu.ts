@@ -14,7 +14,7 @@ export async function manageUsersMenu() {
 
   switch (manageUsersMenuOption) {
     case "List all users":
-      userControllers.listAllUsers();
+       await userControllers.listAllUsers();
       break;
 
     case "List a user by ID":
@@ -34,7 +34,7 @@ export async function manageUsersMenu() {
       break;
 
     case "Load users from seeds":
-      generateUser();
+      await generateUser();
       break;
     }
 
@@ -43,7 +43,7 @@ export async function manageUsersMenu() {
 async function manageUsersListByID() {
   const { userID } = await inquirer.prompt([
     {
-      message: "Please write the user ID",
+      message: "Please write the user ID: ",
       type: "input",
       name: "userID",
     },
@@ -66,7 +66,7 @@ async function manageUsersInsert() {
     },
     {
       message: "Please write a password",
-      type: "password",
+      type: "input",
       name: "registerPassword",
     },
   ]);
@@ -93,7 +93,7 @@ async function manageUsersUpdate() {
     },
     {
       message: "Please write the new password",
-      type: "password",
+      type: "input",
       name: "updatePassword",
     },
   ]);

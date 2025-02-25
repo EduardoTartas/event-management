@@ -15,7 +15,6 @@ export async function newLog(info: string): Promise<void> {
 
   try {
     await insertIntoLog(log);
-    console.log("Log entry created successfully!");
   } catch (error) {
     console.log("Error creating log entry", error);
   }

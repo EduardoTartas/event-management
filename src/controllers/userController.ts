@@ -26,7 +26,7 @@ export async function listAllUsers(): Promise<void> {
     const resolve = users.slice(1);
     if (resolve.length > 0) {
       console.log("Users found!");
-      console.table(resolve); // Skip the first line
+      console.table(resolve);
       newLog("All users listed successfully!");
     } else {
       console.log("No users found!");

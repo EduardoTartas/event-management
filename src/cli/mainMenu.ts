@@ -39,7 +39,7 @@ export async function mainMenu() {
   
     await inquirer.prompt([
       {
-        message: "\nPress enter to continue...",
+        message: "\nPress enter to continue...\n",
         type: "input",
         name: "continue"
       }

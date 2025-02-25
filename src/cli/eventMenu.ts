@@ -14,7 +14,7 @@ export async function manageEventsMenu(): Promise<void> {
 
   switch (manageEventsMenuOption) {
     case "List all events":
-      eventControllers.listAllEvents();
+      await eventControllers.listAllEvents();
       break;
 
     case "List an event by ID":

@@ -5,7 +5,7 @@ import { newLog } from '../controllers/logController';
 
 export const userSeeds: userModel[] = [];
 
-export function generateUser(): void {
+export async function generateUser(): Promise<void> {
     for (let i = 0; i < 10; i++) {
         const user: userModel = {
             id: faker.string.uuid(),
@@ -13,7 +13,7 @@ export function generateUser(): void {
             email: faker.internet.email(),
             password: faker.internet.password()
         }
-        insertUserService(user);
+        await insertUserService(user);
         userSeeds.push(user);
     }
     newLog("User seeds generated");
