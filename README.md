@@ -36,14 +36,14 @@ O repositório contém três branches principais, cada uma representando uma evo
 - O banco de dados foi **migrado para o Turso**, permitindo acesso remoto e escalabilidade.  
 
 ---
-## 🚀 Como Executar o Projeto
+## 🚀 Como Executar o Projeto Branch Main
 
 ### 1. Clonar o Repositório
 
 Primeiro, clone o repositório para sua máquina local:
 
   ```
-  git clone https:https://github.com/EduardoTartas/gerenciamento-de-usuarios.git
+  git clone https:https://github.com/EduardoTartas/event-management.git
   ```
 ### 2. Instalar Dependências
 Certifique-se de ter o Node.js e o npm instalados. Em seguida, instale as dependências do projeto executando:
