@@ -30,13 +30,8 @@ O repositório contém três branches principais, cada uma representando uma evo
 - Adicionada uma **interface interativa** para facilitar a navegação.  
 - Navegação com **setas do teclado** e seleção com **Enter**.  
 - Registro de logs aprimorado, agora salvo em um arquivo separado.  
-- **Organização do projeto** em pastas estruturadas:  
-  - `services/` → Lógica de negócio.  
-  - `controllers/` → Controle das requisições.  
-  - `utils/` → Funções utilitárias.  
-  - `seeds/` → Scripts de dados iniciais.  
-  - `data/` → Armazenamento do banco e dos logs.  
-
+- Organização do projeto em pastas estruturadas.
+ 
 ### 3️⃣ `part-3` 🗄️🚀  
 - Implementação da **ORM Drizzle**, tornando as interações com o banco mais estruturadas.  
 - O banco de dados foi **migrado para o Turso**, permitindo acesso remoto e escalabilidade.  
