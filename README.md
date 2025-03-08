@@ -1,4 +1,4 @@
-## 🚀 Como Executar o Projeto Branch Main
+## 🚀 Como Executar o Projeto | Branch part-2
 
 ### 1. Clonar o Repositório
 
