@@ -3,7 +3,7 @@
 ## ⚙️ Funcionalidades 
 
 ✅ **Gerenciamento de Eventos**  
-- Criar, listar, buscar por ID, atualizar e excluir eventos.  
+- Criar, listar, buscar por ID, atualizar e excluir eventos.
 
 ✅ **Gerenciamento de Usuários**  
 - Criar, listar, buscar por ID, atualizar e excluir usuários.  
